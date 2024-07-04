@@ -7,7 +7,7 @@ import { GroupOutlined, CheckCircle } from '@mui/icons-material';
 import { Typography } from '@mui/material';
 
 
-  export const CustomToolbar = (props: any) => {
+export default function CustomToolbar (props: any) {
     const { rowTotal, selectionTotal } = props;
     return (
       <GridToolbarContainer className="bg-[#eff0f3] flex justify-between items-center p-3">

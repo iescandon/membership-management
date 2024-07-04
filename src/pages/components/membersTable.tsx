@@ -5,9 +5,9 @@ import {
   GridRowSelectionModel,
 } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
-import { CustomFooter } from "./customFooter";
-import { CustomToolbar } from "./customToolbar";
-import { CustomCheckbox } from "./customCheckbox";
+import CustomFooter from "./customFooter";
+import CustomToolbar from "./customToolbar";
+import CustomCheckbox from "./customCheckbox";
 import { UserData } from "@/types";
 
 

@@ -6,7 +6,7 @@ import {
 } from '@mui/x-data-grid';
 import { Pagination } from '@mui/material';
 
-export const CustomFooter = () => {
+export default function CustomFooter () {
     const apiRef = useGridApiContext();
     const page = useGridSelector(apiRef, gridPageSelector);
     const pageCount = useGridSelector(apiRef, gridPageCountSelector);
