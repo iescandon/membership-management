@@ -5,7 +5,7 @@ import {
   GridRowSelectionModel,
 } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
-import CustomFooter from "./customFooter";
+import CustomPagination from "./customPagination";
 import CustomToolbar from "./customToolbar";
 import CustomCheckbox from "./customCheckbox";
 import { UserData } from "@/types";
@@ -30,7 +30,7 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
       width: 70,
       renderCell: (params) => {
         const fileUrl = params.formattedValue.length ? params.formattedValue[0].file_url : '/images/placeholder.jpg';
-        return <img className="w-full h-full object-cover" src={fileUrl} />
+        return <img className="w-full h-full object-cover" src={fileUrl} alt={`${params.row.name} profile photo`} />
       },
     },
     { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, width: 125 },
@@ -95,7 +95,7 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
         }}
         slots={{
           toolbar: CustomToolbar,
-          footer: CustomFooter,
+          pagination: CustomPagination,
           baseCheckbox: CustomCheckbox,
         }}
         slotProps={{
@@ -106,6 +106,7 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
         }}
         checkboxSelection
         onRowSelectionModelChange={setSelection}
+        hideFooterSelectedRowCount
       />
     </Box>
   );

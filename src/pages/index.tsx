@@ -23,7 +23,7 @@ export default function Home() {
       <div className="flex flex-col items-center w-full h-screen text-sm p-12 py-8 space-y-6">
         <div className="flex w-full justify-between items-center">
           <div className="flex items-center">
-            <img src="/images/logo.png" className="h-14 pr-2" />
+            <img src="/images/logo.png" className="h-14 pr-2" alt="LIT logo" />
             <Typography variant="h1" className="text-3xl text-white font-semibold">
               Membership Management
             </Typography>
