@@ -3,9 +3,12 @@ import {
   DataGrid,
   GridColDef,
   GridRowSelectionModel,
+  gridPageSelector,
+  gridPageCountSelector,
+  useGridApiContext,
+  useGridSelector,
 } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
-import CustomPagination from "./customPagination";
+import { Box, Pagination } from '@mui/material';
 import CustomToolbar from "./customToolbar";
 import CustomCheckbox from "./customCheckbox";
 import { UserData } from "@/types";
@@ -15,6 +18,28 @@ interface MembersTableProps {
   memberData: UserData[];
   isLoading: boolean;
 }
+
+function CustomPagination () {
+    const apiRef = useGridApiContext();
+    const page = useGridSelector(apiRef, gridPageSelector);
+    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+  
+    if (!pageCount) {
+      return;
+    }
+  
+    return (
+      <div className="w-full flex justify-center">
+        <Pagination
+          sx={(theme) => ({ padding: theme.spacing(1.5, 0) })}
+          color="primary"
+          count={pageCount}
+          page={page + 1}
+          onChange={(event, value) => apiRef.current.setPage(value - 1)}
+        />
+      </div>
+    );
+  }
 
 export default function MembersTable({ memberData, isLoading }: MembersTableProps) {
   const [rows, setRows] = useState<UserData[]>([]);
