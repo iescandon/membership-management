@@ -174,6 +174,9 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
       "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus": {
         outline: "none!important",
       },
+      "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus-within": {
+        outline: "none!important",
+      },
       "& .MuiInput-root": {
         backgroundColor: "white",
         padding: "2px 8px 2px 8px"
