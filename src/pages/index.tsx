@@ -37,9 +37,7 @@ export default function Home() {
   }
 
   return (
-    <main
-      className='flex justify-center'
-    >
+    <main>
       <div className="flex flex-col items-center w-full h-screen text-sm p-12 py-8 space-y-6">
         <div className="flex w-full justify-between items-center">
           <div className="flex items-center">

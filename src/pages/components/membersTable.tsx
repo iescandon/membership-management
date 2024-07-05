@@ -9,10 +9,12 @@ import {
   gridPageSelector,
   gridPageCountSelector,
   useGridApiContext,
+  useGridApiRef,
   useGridSelector,
+  GridEventListener,
 } from '@mui/x-data-grid';
 import { Box, Pagination, Typography } from '@mui/material';
-import { GroupOutlined, CheckCircle } from '@mui/icons-material';
+import { GroupOutlined, CheckCircle, LinkedIn } from '@mui/icons-material';
 import { ChapterUserData, UserData } from "@/types";
 
 interface MembersTableProps {
@@ -83,11 +85,19 @@ const columns: GridColDef<ChapterUserData>[] = [
       return <img className="w-full h-full object-cover" src={fileUrl} alt={`${params.row.first_name} profile photo`} />
     },
   },
-  { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, width: 125 },
-  { field: 'last_name', headerName: 'LAST NAME', disableColumnMenu: true, width: 125 },
-  { field: 'title', headerName: 'JOB TITLE', disableColumnMenu: true, width: 250 },
-  { field: 'company_name', headerName: 'COMPANY NAME', disableColumnMenu: true, width: 250 },
-  { field: 'linkedin_url', headerName: 'LINKEDIN URL', disableColumnMenu: true, width: 250 },
+  { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, width: 150 },
+  { field: 'last_name', headerName: 'LAST NAME', disableColumnMenu: true, width: 150 },
+  { field: 'title', headerName: 'JOB TITLE', disableColumnMenu: true, width: 300 },
+  { field: 'company_name', headerName: 'COMPANY NAME', disableColumnMenu: true, width: 300 },
+  { 
+    field: 'linkedin_url',
+    headerName: '',
+    disableColumnMenu: true,
+    width: 70,
+    renderCell: (params) => {
+        return params.formattedValue ? <a href={params.formattedValue} target="_blank" rel="noopener noreferrer"><LinkedIn className="text-[#0072b1]" /></a> : ""
+    },
+  },
 ];
 
 // const columns: GridColDef<UserData>[] = [
@@ -125,7 +135,24 @@ const columns: GridColDef<ChapterUserData>[] = [
 export default function MembersTable({ memberData, isLoading }: MembersTableProps) {
   const [rows, setRows] = useState<ChapterUserData[]>([]);
   const [selection, setSelection] = useState<GridRowSelectionModel>([]);
+  const apiRef = useGridApiRef();
 
+  const handleClick: GridEventListener<'rowClick'> = (
+    params,
+    event,
+    details,
+  ) => {
+    if (event.type === "click" && event.detail === 2) {
+      let selectedIds;
+      if (selection.includes(params.id)) {
+        selectedIds = selection.filter((id) => id !== params.id)
+      } else {
+        selectedIds = [...selection, params.id];
+      }
+      apiRef.current.setRowSelectionModel(selectedIds);
+      setSelection(selectedIds);
+    }
+  };
 
   useEffect(() => {
     setRows(memberData ?? []);
@@ -140,7 +167,7 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
   return (
     <Box sx={{ 
       width: '100%', 
-      backgroundColor: 'white', 
+      backgroundColor: 'white',
       "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
         display: "none!important"
       },
@@ -156,9 +183,11 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
       },
       }}>
       <DataGrid
+      sx={{ height: "595px" }}
+        apiRef={apiRef}
         rows={rows ?? []}
         columns={columns}
-        autoHeight {...rows}
+        // autoHeight {...rows}
         loading={isLoading}
         initialState={{
           pagination: { paginationModel: { pageSize: 8 } },
@@ -174,9 +203,11 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
             selectionTotal: selection.length,
           },
         }}
+        onRowClick={handleClick}
         checkboxSelection
-        onRowSelectionModelChange={setSelection}
+        // onRowSelectionModelChange={setSelection}
         hideFooterSelectedRowCount
+        disableRowSelectionOnClick
       />
     </Box>
   );

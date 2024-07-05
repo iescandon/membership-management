@@ -56,6 +56,7 @@ interface ChapterDict {
 };
 
 // CONSTANTS
+// List of all chapter ids https://api.latinasintech.org/api/chapters/list
 export const txChapters: ChapterDict = {
   "atx": {
     chapterName: "Austin",
