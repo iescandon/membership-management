@@ -13,10 +13,10 @@ import {
 } from '@mui/x-data-grid';
 import { Box, Pagination, Typography } from '@mui/material';
 import { GroupOutlined, CheckCircle } from '@mui/icons-material';
-import { UserData } from "@/types";
+import { ChapterUserData, UserData } from "@/types";
 
 interface MembersTableProps {
-  memberData: UserData[];
+  memberData: ChapterUserData[];
   isLoading: boolean;
 }
 
@@ -70,6 +70,26 @@ function CustomCheckbox (props: any) {
   return <CheckCircle className={props.checked ? 'text-green-600' : 'text-gray-300'} />
 }
 
+const columns: GridColDef<ChapterUserData>[] = [
+  {
+    field: 'profile_photo',
+    headerName: '',
+    sortable: false,
+    disableColumnMenu: true,
+    disableExport: true,
+    width: 70,
+    renderCell: (params) => {
+      const fileUrl = params.formattedValue.length ? params.formattedValue[0] : '/images/placeholder.jpg';
+      return <img className="w-full h-full object-cover" src={fileUrl} alt={`${params.row.first_name} profile photo`} />
+    },
+  },
+  { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, width: 125 },
+  { field: 'last_name', headerName: 'LAST NAME', disableColumnMenu: true, width: 125 },
+  { field: 'title', headerName: 'JOB TITLE', disableColumnMenu: true, width: 250 },
+  { field: 'company_name', headerName: 'COMPANY NAME', disableColumnMenu: true, width: 250 },
+  { field: 'linkedin_url', headerName: 'LINKEDIN URL', disableColumnMenu: true, width: 250 },
+];
+
 // const columns: GridColDef<UserData>[] = [
 //   {
 //     field: 'profile_photo',
@@ -79,51 +99,31 @@ function CustomCheckbox (props: any) {
 //     disableExport: true,
 //     width: 70,
 //     renderCell: (params) => {
-//       const fileUrl = params.formattedValue.length ? params.formattedValue[0] : '/images/placeholder.jpg';
-//       return <img className="w-full h-full object-cover" src={fileUrl} alt={`${params.row.first_name} profile photo`} />
+//       const fileUrl = params.formattedValue.length ? params.formattedValue[0].file_url : '/images/placeholder.jpg';
+//       return <img className="w-full h-full object-cover" src={fileUrl} alt={`${params.row.name} profile photo`} />
 //     },
 //   },
 //   { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, width: 125 },
 //   { field: 'last_name', headerName: 'LAST NAME', disableColumnMenu: true, width: 125 },
-//   { field: 'title', headerName: 'JOB TITLE', disableColumnMenu: true, width: 250 },
-//   { field: 'company_name', headerName: 'COMPANY NAME', disableColumnMenu: true, width: 250 },
-//   { field: 'linkedin_url', headerName: 'LINKEDIN URL', disableColumnMenu: true, width: 250 },
+//   { field: 'email', headerName: 'E-MAIL', disableColumnMenu: true, width: 250 },
+//   {
+//     field: 'job_title',
+//     headerName: 'JOB TITLE',
+//     disableColumnMenu: true,
+//     width: 250,
+//     valueGetter: (value, row) => row.job_info?.title,
+//   },
+//   {
+//     field: 'company_name',
+//     headerName: 'COMPANY NAME',
+//     disableColumnMenu: true,
+//     width: 250,
+//     valueGetter: (value, row) => row.job_info?.company_name,
+//   },
 // ];
 
-const columns: GridColDef<UserData>[] = [
-  {
-    field: 'profile_photo',
-    headerName: '',
-    sortable: false,
-    disableColumnMenu: true,
-    disableExport: true,
-    width: 70,
-    renderCell: (params) => {
-      const fileUrl = params.formattedValue.length ? params.formattedValue[0].file_url : '/images/placeholder.jpg';
-      return <img className="w-full h-full object-cover" src={fileUrl} alt={`${params.row.name} profile photo`} />
-    },
-  },
-  { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, width: 125 },
-  { field: 'last_name', headerName: 'LAST NAME', disableColumnMenu: true, width: 125 },
-  { field: 'email', headerName: 'E-MAIL', disableColumnMenu: true, width: 250 },
-  {
-    field: 'job_title',
-    headerName: 'JOB TITLE',
-    disableColumnMenu: true,
-    width: 250,
-    valueGetter: (value, row) => row.job_info?.title,
-  },
-  {
-    field: 'company_name',
-    headerName: 'COMPANY NAME',
-    disableColumnMenu: true,
-    width: 250,
-    valueGetter: (value, row) => row.job_info?.company_name,
-  },
-];
-
 export default function MembersTable({ memberData, isLoading }: MembersTableProps) {
-  const [rows, setRows] = useState<UserData[]>([]);
+  const [rows, setRows] = useState<ChapterUserData[]>([]);
   const [selection, setSelection] = useState<GridRowSelectionModel>([]);
 
 
