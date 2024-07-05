@@ -31,20 +31,36 @@ export default async function handler(
   const { cityCode } = req.query;
 
   if (!cityCode) {
+    res.status(400)
     return;
   }
 
   const { chapterNum } = txChapters[`${cityCode}`];
 
   if (!chapterNum) {
+    res.status(400)
     return;
   }
+  const url = `https://${process.env.NEXT_PUBLIC_CHAPTERS_API_URL}/${chapterNum}/id?populate%5B%5D=latinas_chapters`
+  let jsonResponse;
 
-  const houstonUrl = `https://${process.env.NEXT_PUBLIC_CHAPTERS_API_URL}/${chapterNum}/id?populate%5B%5D=latinas_chapters`
-  const response = await getData(houstonUrl);
+
+  try {
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    jsonResponse = await response.json();
+  } catch (error) {
+    console.error(error);
+    res.status(400);
+    throw error;
+  }
+
+
   
   const t1 = performance.now(); 
   console.log(`Call to doSomething took ${t1 - t0} milliseconds.`)
 
-  res.status(200).json(response.data);
+  res.status(200).json(jsonResponse.data);
 }

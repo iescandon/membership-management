@@ -42,8 +42,8 @@ export default async function handler(
     return;
   }
 
-  const houstonUrl = `https://${process.env.NEXT_PUBLIC_USERS_API_URL}?preferred_chapter=${chapterNum}&active=1&populate%5B0%5D=profile_photo&populate%5B1%5D=job_info&page=${pageNum}`
-  const response: SuccessResponse = await getData(houstonUrl);
+  const url = `https://${process.env.NEXT_PUBLIC_USERS_API_URL}?preferred_chapter=${chapterNum}&active=1&populate%5B0%5D=profile_photo&populate%5B1%5D=job_info&page=${pageNum}`
+  const response: SuccessResponse = await getData(url);
 
   const data = response.data;
   

@@ -40,8 +40,8 @@ export default async function handler(
     return;
   }
 
-  const houstonUrl = `https://${process.env.NEXT_PUBLIC_USERS_API_URL}?preferred_chapter=${chapterNum}&active=1&populate%5B0%5D=profile_photo&populate%5B1%5D=job_info`
-  const page1response: SuccessResponse = await getData(`${houstonUrl}&page=1`);
+  const url = `https://${process.env.NEXT_PUBLIC_USERS_API_URL}?preferred_chapter=${chapterNum}&active=1&populate%5B0%5D=profile_photo&populate%5B1%5D=job_info`
+  const page1response: SuccessResponse = await getData(`${url}&page=1`);
   const totalPageCount: number = page1response.data.last_page;
 
   let data: UserData[] = page1response.data.data;
@@ -49,7 +49,7 @@ export default async function handler(
 
 
   for (let i = 2; i < totalPageCount + 1; i++) {
-    otherPagePromises.push(getData(`${houstonUrl}&page=${i}`));
+    otherPagePromises.push(getData(`${url}&page=${i}`));
   }
 
   const otherPageResponses: SuccessResponse[] = await Promise.all(otherPagePromises);
