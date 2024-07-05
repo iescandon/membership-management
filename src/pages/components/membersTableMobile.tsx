@@ -50,27 +50,27 @@ function CustomToolbar (props: any) {
   );
 }
 
-// function CustomPagination () {
-//   const apiRef = useGridApiContext();
-//   const page = useGridSelector(apiRef, gridPageSelector);
-//   const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+function CustomPagination () {
+  const apiRef = useGridApiContext();
+  const page = useGridSelector(apiRef, gridPageSelector);
+  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
 
-//   if (!pageCount) {
-//     return;
-//   }
+  if (!pageCount) {
+    return;
+  }
 
-//   return (
-//     <div className="hidden w-full flex justify-center">
-//       <Pagination
-//         sx={(theme) => ({ padding: theme.spacing(1.5, 0) })}
-//         color="primary"
-//         count={pageCount}
-//         page={page + 1}
-//         onChange={(event, value) => apiRef.current.setPage(value - 1)}
-//       />
-//     </div>
-//   );
-// }
+  return (
+    <div className="w-screen flex justify-center">
+      <Pagination
+        sx={(theme) => ({ padding: theme.spacing(1.5, 0) })}
+        color="primary"
+        count={pageCount}
+        page={page + 1}
+        onChange={(event, value) => apiRef.current.setPage(value - 1)}
+      />
+    </div>
+  );
+}
 
 function CustomCheckbox (props: any) {
   return <CheckCircle className={props.checked ? 'text-green-600' : 'text-gray-300'} />
@@ -94,7 +94,17 @@ const columns: GridColDef<ChapterUserData>[] = [
     width: 70,
     renderCell: (params) => {
       const fileUrl = params.formattedValue.length ? params.formattedValue[0] : '/images/placeholder.jpg';
-      return <img className="w-[50px] h-[50px] object-cover" src={fileUrl} alt={`${params.row.first_name} profile photo`} />
+      return (
+        <img
+          className="w-[50px] h-[50px] object-cover"
+          alt={`${params.row.first_name} profile photo`}
+          src={fileUrl}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src='/images/placeholder.jpg';
+          }}
+        />
+      )
     },
   },
   { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, flex: 2, minWidth: 100 },
@@ -177,9 +187,8 @@ export default function MembersTableMobile({ memberData, isLoading }: MembersTab
   }, [isLoading])
 
   return (
-    <div className="pb-10">
     <Box sx={{ 
-      width: '95vw',
+      width: '92vw',
       backgroundColor: 'white',
       "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
         display: "none!important"
@@ -189,6 +198,9 @@ export default function MembersTableMobile({ memberData, isLoading }: MembersTab
       },
       "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus-within": {
         outline: "none!important",
+      },
+      "& .MuiButtonBase-root.MuiPaginationItem-root.Mui-selected": {
+        color: "white",
       },
       // "& .MuiDataGrid-overlayWrapper": {
       //   minHeight: "400px",
@@ -205,19 +217,19 @@ export default function MembersTableMobile({ memberData, isLoading }: MembersTab
       },
       }}>
       <DataGrid
-      sx={{ minHeight: "595px" }}
+        // sx={{ minHeight: "595px" }}
         apiRef={apiRef}
         rows={rows ?? []}
         columns={columns}
         autoHeight {...rows}
         loading={isLoading}
         initialState={{
-          pagination: { paginationModel: { pageSize: 8 } },
+          pagination: { paginationModel: { pageSize: 10 } },
           // sorting: { sortModel: [{ field: 'last_name', sort: 'asc' }]},
         }}
         slots={{
           toolbar: CustomToolbar,
-          // pagination: CustomPagination,
+          pagination: CustomPagination,
           baseCheckbox: CustomCheckbox,
           noRowsOverlay: CustomNoRowsOverlay,
         }}
@@ -228,12 +240,12 @@ export default function MembersTableMobile({ memberData, isLoading }: MembersTab
           },
         }}
         onRowClick={handleClick}
+        // pageSizeOptions={[8, 10, 12]}
         checkboxSelection
         // onRowSelectionModelChange={setSelection}
         hideFooterSelectedRowCount
         disableRowSelectionOnClick
       />
     </Box>
-    </div>
   );
 }

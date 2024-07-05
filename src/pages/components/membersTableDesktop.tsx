@@ -94,7 +94,17 @@ const columns: GridColDef<ChapterUserData>[] = [
     width: 70,
     renderCell: (params) => {
       const fileUrl = params.formattedValue.length ? params.formattedValue[0] : '/images/placeholder.jpg';
-      return <img className="w-[50px] h-[50px] object-cover" src={fileUrl} alt={`${params.row.first_name} profile photo`} />
+      return (
+        <img
+          className="w-[50px] h-[50px] object-cover"
+          alt={`${params.row.first_name} profile photo`}
+          src={fileUrl}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src='/images/placeholder.jpg';
+          }}
+        />
+      )
     },
   },
   { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, flex: 2, minWidth: 100 },
@@ -189,6 +199,9 @@ export default function MembersTableDesktop({ memberData, isLoading }: MembersTa
         "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus-within": {
           outline: "none!important",
         },
+        "& .MuiButtonBase-root.MuiPaginationItem-root.Mui-selected": {
+          color: "white",
+        },
         // "& .MuiDataGrid-overlayWrapper": {
         //   minHeight: "400px",
         // },
@@ -204,14 +217,14 @@ export default function MembersTableDesktop({ memberData, isLoading }: MembersTa
         },
         }}>
         <DataGrid
-        sx={{ minHeight: "595px" }}
+          // sx={{ minHeight: "595px" }}
           apiRef={apiRef}
           rows={rows ?? []}
           columns={columns}
           autoHeight {...rows}
           loading={isLoading}
           initialState={{
-            pagination: { paginationModel: { pageSize: 8 } },
+            pagination: { paginationModel: { pageSize: 10 } },
             // sorting: { sortModel: [{ field: 'last_name', sort: 'asc' }]},
           }}
           slots={{
@@ -227,6 +240,7 @@ export default function MembersTableDesktop({ memberData, isLoading }: MembersTa
             },
           }}
           onRowClick={handleClick}
+          // pageSizeOptions={[8, 10, 12]}
           checkboxSelection
           // onRowSelectionModelChange={setSelection}
           hideFooterSelectedRowCount

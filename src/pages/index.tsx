@@ -48,7 +48,7 @@ export default function Home() {
 
   return (
     <main>
-      <div className="flex flex-col items-center w-full h-screen text-sm px-10 py-8 space-y-6">
+      <div className="flex flex-col items-center w-full min-h-screen text-sm p-10 space-y-6">
         <div className="flex flex-wrap w-full justify-between items-center">
           <Title />
           <ChapterDropdown callbackFn={getMembers} />
