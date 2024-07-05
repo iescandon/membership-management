@@ -179,7 +179,7 @@ export default function MembersTableMobile({ memberData, isLoading }: MembersTab
   return (
     <div className="pb-10">
     <Box sx={{ 
-      width: '85vw',
+      width: '95vw',
       backgroundColor: 'white',
       "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
         display: "none!important"
