@@ -1,6 +1,6 @@
 import { getData } from "@/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ChapterDict, SuccessResponse, UserData } from "@/types";
+import { ChapterDict } from "@/types";
 
 export const config = {
   api: {
@@ -28,13 +28,11 @@ export default async function handler(
   };
 
   const t0 = performance.now(); 
-  const { cityCode, pageNum } = req.query;
+  const { cityCode } = req.query;
 
-  if (!cityCode || !pageNum) {
+  if (!cityCode) {
     return;
   }
-
-  console.log(cityCode, pageNum);
 
   const { chapterNum } = txChapters[`${cityCode}`];
 
@@ -42,13 +40,11 @@ export default async function handler(
     return;
   }
 
-  const houstonUrl = `https://${process.env.NEXT_PUBLIC_USERS_API_URL}?preferred_chapter=${chapterNum}&active=1&populate%5B0%5D=profile_photo&populate%5B1%5D=job_info&page=${pageNum}`
-  const response: SuccessResponse = await getData(houstonUrl);
-
-  const data = response.data;
+  const houstonUrl = `https://${process.env.NEXT_PUBLIC_CHAPTERS_API_URL}/${chapterNum}/id?populate%5B%5D=latinas_chapters`
+  const response = await getData(houstonUrl);
   
   const t1 = performance.now(); 
   console.log(`Call to doSomething took ${t1 - t0} milliseconds.`)
 
-  res.status(200).json(data);
+  res.status(200).json(response.data);
 }

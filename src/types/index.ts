@@ -1,4 +1,3 @@
-
 interface JobInfo {
   id?: number;
   i_am?: string;
@@ -23,6 +22,16 @@ export interface UserData {
   created_at: string;
   profile_photo?: ProfilePhoto[];
   job_info?: JobInfo;
+};
+
+export interface ChapterUserData {
+  id: number;
+  first_name: string;
+  last_name: string;
+  linkedin_url?: string;
+  company_name?: string;
+  title?: string;
+  profile_photo?: string[];
 };
 
 // API TYPES

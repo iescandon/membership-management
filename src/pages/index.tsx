@@ -5,14 +5,34 @@ import ChapterDropdown from "./components/chapterDropdown";
 import { Typography } from "@mui/material";
 import { UserData } from "@/types";
 
+const headers = {
+  'Cache-Control': 'no-cache',
+  'Pragma': 'no-cache',
+  'Expires': '0',
+};
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [memberData, setMemberData] = useState<UserData[]>([]);
 
   const getMembers = async (cityCode: string) => {
     setIsLoading(true);
-    const response = await axios.get(`/api/members?cityCode=${cityCode}`);
-    setMemberData(response.data)
+    const response = await axios.get(`/api/members?cityCode=${cityCode}&pageNum=1`, { headers });
+
+    let data: any[] = response.data.data;
+
+    const pageArray = Array.from(Array(response.data.last_page + 1).keys()).slice(2, response.data.last_page + 1);
+    const pagePromises = Promise.all(pageArray.map((num) => axios.get(`/api/members?cityCode=${cityCode}&pageNum=${num}`, { headers })))
+    const pageResponses = await Promise.all([pagePromises]);
+
+    pageResponses[0].forEach((response: any) => {
+      data = data.concat(response.data.data);
+    })
+
+    setMemberData(data)
+    // const response = await axios.get(`/api/chapters?cityCode=${cityCode}`);
+    // console.log(Object.values(response.data.latinas_chapters))
+    // setMemberData(Object.values(response.data.latinas_chapters))
     setIsLoading(false);
   }
 
