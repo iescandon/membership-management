@@ -194,6 +194,7 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
         loading={isLoading}
         initialState={{
           pagination: { paginationModel: { pageSize: 8 } },
+          // sorting: { sortModel: [{ field: 'last_name', sort: 'asc' }]},
         }}
         slots={{
           toolbar: CustomToolbar,
