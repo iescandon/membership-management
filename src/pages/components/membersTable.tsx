@@ -13,7 +13,7 @@ import {
   useGridSelector,
   GridEventListener,
 } from '@mui/x-data-grid';
-import { Box, Pagination, Typography } from '@mui/material';
+import { Box, Pagination, Typography, Stack } from '@mui/material';
 import { GroupOutlined, CheckCircle, LinkedIn } from '@mui/icons-material';
 import { ChapterUserData, UserData } from "@/types";
 
@@ -70,6 +70,14 @@ function CustomPagination () {
 
 function CustomCheckbox (props: any) {
   return <CheckCircle className={props.checked ? 'text-green-600' : 'text-gray-300'} />
+}
+
+function CustomNoRowsOverlay () {
+  return (
+    <Stack height="100%" alignItems="center" justifyContent="center">
+      Select a chapter from the dropdown above to retrieve members.
+    </Stack>
+  )
 }
 
 const columns: GridColDef<ChapterUserData>[] = [
@@ -200,6 +208,7 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
           toolbar: CustomToolbar,
           pagination: CustomPagination,
           baseCheckbox: CustomCheckbox,
+          noRowsOverlay: CustomNoRowsOverlay,
         }}
         slotProps={{
           toolbar: {
