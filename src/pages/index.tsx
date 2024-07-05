@@ -17,12 +17,14 @@ export default function Home() {
 
   const getMembers = async (cityCode: string) => {
     setIsLoading(true);
-    const response = await axios.get(`/api/members?cityCode=${cityCode}&pageNum=1`, { headers });
+    // const response = await axios.get(`/api/members?cityCode=${cityCode}&pageNum=1`, { headers });
+    const response = await axios.get(`/api/members?cityCode=${cityCode}&pageNum=1`);
 
     let data: any[] = response.data.data;
 
     const pageArray = Array.from(Array(response.data.last_page + 1).keys()).slice(2, response.data.last_page + 1);
-    const pagePromises = Promise.all(pageArray.map((num) => axios.get(`/api/members?cityCode=${cityCode}&pageNum=${num}`, { headers })))
+    // const pagePromises = Promise.all(pageArray.map((num) => axios.get(`/api/members?cityCode=${cityCode}&pageNum=${num}`, { headers })))
+    const pagePromises = Promise.all(pageArray.map((num) => axios.get(`/api/members?cityCode=${cityCode}&pageNum=${num}`)))
     const pageResponses = await Promise.all([pagePromises]);
 
     pageResponses[0].forEach((response: any) => {
