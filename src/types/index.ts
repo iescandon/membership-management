@@ -51,7 +51,22 @@ interface Chapter {
   chapterNum: number;
 };
   
-export interface ChapterDict {
+interface ChapterDict {
   [key: string]: Chapter;
 };
 
+// CONSTANTS
+export const txChapters: ChapterDict = {
+  "atx": {
+    chapterName: "Austin",
+    chapterNum: 4622,
+  },
+  "dfw": {
+    chapterName: "Dallas/Fort Worth",
+    chapterNum: 9499,
+  },
+  "htx": {
+    chapterName: "Houston",
+    chapterNum: 9503,
+  },
+};

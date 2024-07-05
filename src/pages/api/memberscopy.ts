@@ -1,6 +1,6 @@
 import { getData } from "@/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ChapterDict, SuccessResponse, UserData } from "@/types";
+import { txChapters, SuccessResponse, UserData } from "@/types";
 
 export const config = {
   api: {
@@ -12,21 +12,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>,
 ) {
-  const txChapters: ChapterDict = {
-    "atx": {
-      chapterName: "Austin",
-      chapterNum: 4622,
-    },
-    "dfw": {
-      chapterName: "Dallas/Fort Worth",
-      chapterNum: 9499,
-    },
-    "htx": {
-      chapterName: "Houston",
-      chapterNum: 9503,
-    },
-  };
-
   const t0 = performance.now(); 
   const { cityCode } = req.query;
 
@@ -59,7 +44,7 @@ export default async function handler(
   })
 
   const t1 = performance.now(); 
-  console.log(`Call to doSomething took ${t1 - t0} milliseconds.`)
+  console.log(`Call to retrieve all members took ${t1 - t0} milliseconds.`)
 
   res.status(200).json(data);
 }
