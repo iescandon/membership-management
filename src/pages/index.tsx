@@ -34,7 +34,7 @@ export default function Home() {
     // console.log(data);
 
     // setMemberData(data)
-    const response = await axios.get(`/api/chapters?cityCode=${cityCode}`, { headers } );
+    const response = await axios.get(`/api/chapters?cityCode=${cityCode}`);
     console.log(Object.values(response.data.latinas_chapters))
     setMemberData(Object.values(response.data.latinas_chapters))
     setIsLoading(false);
