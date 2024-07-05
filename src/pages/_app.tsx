@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import { AppCacheProvider } from '@mui/material-nextjs/v13-pagesRouter';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Raleway } from 'next/font/google';
+import Head from "next/head";
 
 const font = Raleway({
   weight: ['300', '400', '500', '700'],
@@ -25,6 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <AppCacheProvider {...pageProps}>
       <ThemeProvider theme={theme}>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        </Head>
         <Component {...pageProps} />
       </ThemeProvider>
     </AppCacheProvider>

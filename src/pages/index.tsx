@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import MembersTable from "./components/membersTable";
 import ChapterDropdown from "./components/chapterDropdown";
 import { ChapterUserData, UserData } from "@/types";
 import Title from "./components/title";
+import useMediaQuery from "@/hooks/useMediaQuery";
+import MembersTableDesktop from "./components/membersTableDesktop";
+import MembersTableMobile from "./components/membersTableMobile";
+
 
 // const headers = {
 //   'Cache-Control': 'no-cache',
@@ -14,6 +18,12 @@ import Title from "./components/title";
 export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [memberData, setMemberData] = useState<ChapterUserData[]>([]);
+
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
+  useEffect(() => {
+    console.log(isMobile);
+  }, [isMobile])
 
   const getMembers = async (cityCode: string) => {
     setIsLoading(true);
@@ -43,9 +53,14 @@ export default function Home() {
           <Title />
           <ChapterDropdown callbackFn={getMembers} />
         </div>
-        <div className="pb-10 md:pb-0">
-          <MembersTable memberData={memberData} isLoading={isLoading} />
+        <div>
+          {
+            isMobile ? <MembersTableMobile memberData={memberData} isLoading={isLoading} /> : <MembersTableDesktop memberData={memberData} isLoading={isLoading} />
+          }
         </div>
+        {/* <div className="pb-10 md:pb-0">
+          <MembersTable memberData={memberData} isLoading={isLoading} />
+        </div> */}
       </div>
     </main>
   );

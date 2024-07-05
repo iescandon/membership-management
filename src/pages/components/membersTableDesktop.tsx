@@ -25,11 +25,11 @@ interface MembersTableProps {
 function CustomToolbar (props: any) {
   const { rowTotal, selectionTotal } = props;
   return (
-    <GridToolbarContainer className="bg-[#eff0f3] flex flex-col-reverse md:flex-row justify-between items-center p-3">
-      <div className="w-full md:w-fit">
+    <GridToolbarContainer className="bg-[#eff0f3] flex justify-between items-center p-3">
+      <div>
         <GridToolbarQuickFilter sx={{ width: "100%" }} />
       </div>
-      <div className="w-full md:w-fit flex justify-between items-center space-x-6 header-tools">
+      <div className="flex justify-between items-center space-x-6 header-tools">
         <div className="flex space-x-2">
           <GroupOutlined />
           <Typography>
@@ -42,7 +42,7 @@ function CustomToolbar (props: any) {
             {selectionTotal} checked in
           </Typography>
         </div>
-        <div className="hidden md:block">
+        <div>
           <GridToolbarExport />
         </div>
       </div>
@@ -144,7 +144,7 @@ const columns: GridColDef<ChapterUserData>[] = [
 //   },
 // ];
 
-export default function MembersTable({ memberData, isLoading }: MembersTableProps) {
+export default function MembersTableDesktop({ memberData, isLoading }: MembersTableProps) {
   const [rows, setRows] = useState<ChapterUserData[]>([]);
   const [selection, setSelection] = useState<GridRowSelectionModel>([]);
   const apiRef = useGridApiRef();
@@ -177,61 +177,61 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
   }, [isLoading])
 
   return (
-    <Box sx={{ 
-      width: '85vw',
-      backgroundColor: 'white',
-      "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
-        display: "none!important"
-      },
-      "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus": {
-        outline: "none!important",
-      },
-      "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus-within": {
-        outline: "none!important",
-      },
-      // "& .MuiDataGrid-overlayWrapper": {
-      //   minHeight: "400px",
-      // },
-      // "& .MuiDataGrid-overlayWrapperInner": {
-      //   minHeight: "inherit",
-      // },
-      "& .MuiInput-root": {
-        backgroundColor: "white",
-        padding: "2px 8px 2px 8px"
-      },
-      "& .header-tools .MuiButtonBase-root": {
-        color: "#1976D2",
-      },
-      }}>
-      <DataGrid
-      sx={{ minHeight: "595px" }}
-        apiRef={apiRef}
-        rows={rows ?? []}
-        columns={columns}
-        autoHeight {...rows}
-        loading={isLoading}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 8 } },
-          // sorting: { sortModel: [{ field: 'last_name', sort: 'asc' }]},
-        }}
-        slots={{
-          toolbar: CustomToolbar,
-          pagination: CustomPagination,
-          baseCheckbox: CustomCheckbox,
-          noRowsOverlay: CustomNoRowsOverlay,
-        }}
-        slotProps={{
-          toolbar: {
-            rowTotal: rows.length,
-            selectionTotal: selection.length,
-          },
-        }}
-        onRowClick={handleClick}
-        checkboxSelection
-        // onRowSelectionModelChange={setSelection}
-        hideFooterSelectedRowCount
-        disableRowSelectionOnClick
-      />
-    </Box>
+      <Box sx={{ 
+        width: '85vw',
+        backgroundColor: 'white',
+        "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
+          display: "none!important"
+        },
+        "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus": {
+          outline: "none!important",
+        },
+        "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus-within": {
+          outline: "none!important",
+        },
+        // "& .MuiDataGrid-overlayWrapper": {
+        //   minHeight: "400px",
+        // },
+        // "& .MuiDataGrid-overlayWrapperInner": {
+        //   minHeight: "inherit",
+        // },
+        "& .MuiInput-root": {
+          backgroundColor: "white",
+          padding: "2px 8px 2px 8px"
+        },
+        "& .header-tools .MuiButtonBase-root": {
+          color: "#1976D2",
+        },
+        }}>
+        <DataGrid
+        sx={{ minHeight: "595px" }}
+          apiRef={apiRef}
+          rows={rows ?? []}
+          columns={columns}
+          autoHeight {...rows}
+          loading={isLoading}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 8 } },
+            // sorting: { sortModel: [{ field: 'last_name', sort: 'asc' }]},
+          }}
+          slots={{
+            toolbar: CustomToolbar,
+            pagination: CustomPagination,
+            baseCheckbox: CustomCheckbox,
+            noRowsOverlay: CustomNoRowsOverlay,
+          }}
+          slotProps={{
+            toolbar: {
+              rowTotal: rows.length,
+              selectionTotal: selection.length,
+            },
+          }}
+          onRowClick={handleClick}
+          checkboxSelection
+          // onRowSelectionModelChange={setSelection}
+          hideFooterSelectedRowCount
+          disableRowSelectionOnClick
+        />
+      </Box>
   );
 }

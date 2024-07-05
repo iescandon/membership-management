@@ -25,11 +25,11 @@ interface MembersTableProps {
 function CustomToolbar (props: any) {
   const { rowTotal, selectionTotal } = props;
   return (
-    <GridToolbarContainer className="bg-[#eff0f3] flex flex-col-reverse md:flex-row justify-between items-center p-3">
-      <div className="w-full md:w-fit">
+    <GridToolbarContainer className="bg-[#eff0f3] flex flex-col-reverse items-center p-3">
+      <div className="w-full">
         <GridToolbarQuickFilter sx={{ width: "100%" }} />
       </div>
-      <div className="w-full md:w-fit flex justify-between items-center space-x-6 header-tools">
+      <div className="w-full flex justify-between items-center space-x-6 header-tools">
         <div className="flex space-x-2">
           <GroupOutlined />
           <Typography>
@@ -42,7 +42,7 @@ function CustomToolbar (props: any) {
             {selectionTotal} checked in
           </Typography>
         </div>
-        <div className="hidden md:block">
+        <div className="hidden">
           <GridToolbarExport />
         </div>
       </div>
@@ -50,27 +50,27 @@ function CustomToolbar (props: any) {
   );
 }
 
-function CustomPagination () {
-  const apiRef = useGridApiContext();
-  const page = useGridSelector(apiRef, gridPageSelector);
-  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+// function CustomPagination () {
+//   const apiRef = useGridApiContext();
+//   const page = useGridSelector(apiRef, gridPageSelector);
+//   const pageCount = useGridSelector(apiRef, gridPageCountSelector);
 
-  if (!pageCount) {
-    return;
-  }
+//   if (!pageCount) {
+//     return;
+//   }
 
-  return (
-    <div className="w-full flex justify-center">
-      <Pagination
-        sx={(theme) => ({ padding: theme.spacing(1.5, 0) })}
-        color="primary"
-        count={pageCount}
-        page={page + 1}
-        onChange={(event, value) => apiRef.current.setPage(value - 1)}
-      />
-    </div>
-  );
-}
+//   return (
+//     <div className="hidden w-full flex justify-center">
+//       <Pagination
+//         sx={(theme) => ({ padding: theme.spacing(1.5, 0) })}
+//         color="primary"
+//         count={pageCount}
+//         page={page + 1}
+//         onChange={(event, value) => apiRef.current.setPage(value - 1)}
+//       />
+//     </div>
+//   );
+// }
 
 function CustomCheckbox (props: any) {
   return <CheckCircle className={props.checked ? 'text-green-600' : 'text-gray-300'} />
@@ -144,7 +144,7 @@ const columns: GridColDef<ChapterUserData>[] = [
 //   },
 // ];
 
-export default function MembersTable({ memberData, isLoading }: MembersTableProps) {
+export default function MembersTableMobile({ memberData, isLoading }: MembersTableProps) {
   const [rows, setRows] = useState<ChapterUserData[]>([]);
   const [selection, setSelection] = useState<GridRowSelectionModel>([]);
   const apiRef = useGridApiRef();
@@ -177,6 +177,7 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
   }, [isLoading])
 
   return (
+    <div className="pb-10">
     <Box sx={{ 
       width: '85vw',
       backgroundColor: 'white',
@@ -216,7 +217,7 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
         }}
         slots={{
           toolbar: CustomToolbar,
-          pagination: CustomPagination,
+          // pagination: CustomPagination,
           baseCheckbox: CustomCheckbox,
           noRowsOverlay: CustomNoRowsOverlay,
         }}
@@ -233,5 +234,6 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
         disableRowSelectionOnClick
       />
     </Box>
+    </div>
   );
 }
