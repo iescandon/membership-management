@@ -25,9 +25,11 @@ interface MembersTableProps {
 function CustomToolbar (props: any) {
   const { rowTotal, selectionTotal } = props;
   return (
-    <GridToolbarContainer className="bg-[#eff0f3] flex justify-between items-center p-3">
-      <GridToolbarQuickFilter />
-      <div className="flex items-center space-x-6 header-tools">
+    <GridToolbarContainer className="bg-[#eff0f3] flex flex-col-reverse md:flex-row justify-between items-center p-3">
+      <div className="w-full md:w-fit">
+        <GridToolbarQuickFilter sx={{ width: "100%" }} />
+      </div>
+      <div className="w-full md:w-fit flex justify-between items-center space-x-6 header-tools">
         <div className="flex space-x-2">
           <GroupOutlined />
           <Typography>
@@ -40,7 +42,9 @@ function CustomToolbar (props: any) {
             {selectionTotal} checked in
           </Typography>
         </div>
-        <GridToolbarExport />
+        <div className="hidden md:block">
+          <GridToolbarExport />
+        </div>
       </div>
     </GridToolbarContainer>
   );
@@ -74,7 +78,7 @@ function CustomCheckbox (props: any) {
 
 function CustomNoRowsOverlay () {
   return (
-    <Stack height="100%" alignItems="center" justifyContent="center">
+    <Stack width="inherit" height="100%" alignItems="center" justifyContent="center">
       Select a chapter from the dropdown above to retrieve members.
     </Stack>
   )
@@ -90,18 +94,18 @@ const columns: GridColDef<ChapterUserData>[] = [
     width: 70,
     renderCell: (params) => {
       const fileUrl = params.formattedValue.length ? params.formattedValue[0] : '/images/placeholder.jpg';
-      return <img className="w-full h-full object-cover" src={fileUrl} alt={`${params.row.first_name} profile photo`} />
+      return <img className="w-[50px] h-[50px] object-cover" src={fileUrl} alt={`${params.row.first_name} profile photo`} />
     },
   },
-  { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, width: 150 },
-  { field: 'last_name', headerName: 'LAST NAME', disableColumnMenu: true, width: 150 },
-  { field: 'title', headerName: 'JOB TITLE', disableColumnMenu: true, width: 300 },
-  { field: 'company_name', headerName: 'COMPANY NAME', disableColumnMenu: true, width: 300 },
+  { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, flex: 2, minWidth: 100 },
+  { field: 'last_name', headerName: 'LAST NAME', disableColumnMenu: true, flex: 2, minWidth: 100 },
+  { field: 'title', headerName: 'JOB TITLE', disableColumnMenu: true, flex: 3, minWidth: 150 },
+  { field: 'company_name', headerName: 'COMPANY NAME', disableColumnMenu: true, flex: 3, minWidth: 150 },
   { 
     field: 'linkedin_url',
     headerName: '',
     disableColumnMenu: true,
-    width: 70,
+    flex: 1,
     renderCell: (params) => {
         return params.formattedValue ? <a href={params.formattedValue} target="_blank" rel="noopener noreferrer"><LinkedIn className="text-[#0072b1]" /></a> : ""
     },
@@ -174,7 +178,7 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
 
   return (
     <Box sx={{ 
-      width: '100%', 
+      width: '85vw',
       backgroundColor: 'white',
       "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
         display: "none!important"
@@ -194,11 +198,11 @@ export default function MembersTable({ memberData, isLoading }: MembersTableProp
       },
       }}>
       <DataGrid
-      sx={{ height: "595px" }}
+      sx={{ minHeight: "595px" }}
         apiRef={apiRef}
         rows={rows ?? []}
         columns={columns}
-        // autoHeight {...rows}
+        autoHeight {...rows}
         loading={isLoading}
         initialState={{
           pagination: { paginationModel: { pageSize: 8 } },

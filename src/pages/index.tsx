@@ -2,14 +2,14 @@ import { useState } from "react";
 import axios from "axios";
 import MembersTable from "./components/membersTable";
 import ChapterDropdown from "./components/chapterDropdown";
-import { Typography } from "@mui/material";
 import { ChapterUserData, UserData } from "@/types";
+import Title from "./components/title";
 
-const headers = {
-  'Cache-Control': 'no-cache',
-  'Pragma': 'no-cache',
-  'Expires': '0',
-};
+// const headers = {
+//   'Cache-Control': 'no-cache',
+//   'Pragma': 'no-cache',
+//   'Expires': '0',
+// };
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,17 +38,12 @@ export default function Home() {
 
   return (
     <main>
-      <div className="flex flex-col items-center w-full h-screen text-sm p-12 py-8 space-y-6">
-        <div className="flex w-full justify-between items-center">
-          <div className="flex items-center">
-            <img src="/images/logo.png" className="h-14 pr-2" alt="LIT logo" />
-            <Typography variant="h1" className="text-3xl text-white font-semibold">
-              Membership Management
-            </Typography>
-          </div>
+      <div className="flex flex-col items-center w-full h-screen text-sm px-10 py-8 space-y-6">
+        <div className="flex flex-col md:flex-row w-full justify-center md:justify-between items-center">
+          <Title />
           <ChapterDropdown callbackFn={getMembers} />
         </div>
-        <div>
+        <div className="pb-10 md:pb-0">
           <MembersTable memberData={memberData} isLoading={isLoading} />
         </div>
       </div>
