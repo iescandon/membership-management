@@ -13,9 +13,10 @@ import {
   useGridSelector,
   GridEventListener,
 } from '@mui/x-data-grid';
-import { Box, Pagination, Typography, Stack } from '@mui/material';
+import { Box, Pagination, Typography } from '@mui/material';
 import { GroupOutlined, CheckCircle, LinkedIn } from '@mui/icons-material';
-import { ChapterUserData, UserData } from "@/types";
+import { ChapterUserData } from "@types";
+import { useMediaQuery } from "@hooks";
 
 interface MembersTableProps {
   memberData: ChapterUserData[];
@@ -23,13 +24,14 @@ interface MembersTableProps {
 }
 
 function CustomToolbar (props: any) {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const { rowTotal, selectionTotal } = props;
   return (
-    <GridToolbarContainer className="bg-[#eff0f3] flex flex-col-reverse items-center p-3">
-      <div className="w-full">
+    <GridToolbarContainer className={`bg-[#eff0f3] flex ${isMobile ? "flex-col-reverse" : "justify-between"} items-center p-3`}>
+      <div className={isMobile ? "w-full" : ""}>
         <GridToolbarQuickFilter sx={{ width: "100%" }} />
       </div>
-      <div className="w-full flex justify-between items-center space-x-6 header-tools">
+      <div className={`${isMobile ? "w-full" : ""} flex justify-between items-center space-x-6 header-tools`}>
         <div className="flex space-x-2">
           <GroupOutlined />
           <Typography>
@@ -42,7 +44,7 @@ function CustomToolbar (props: any) {
             {selectionTotal} checked in
           </Typography>
         </div>
-        <div className="hidden">
+        <div className={isMobile ? "hidden" : ""}>
           <GridToolbarExport />
         </div>
       </div>
@@ -54,13 +56,14 @@ function CustomPagination () {
   const apiRef = useGridApiContext();
   const page = useGridSelector(apiRef, gridPageSelector);
   const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   if (!pageCount) {
     return;
   }
 
   return (
-    <div className="w-screen flex justify-center">
+    <div className={`${isMobile ? "w-screen" : "w-full"} flex justify-center`}>
       <Pagination
         sx={(theme) => ({ padding: theme.spacing(1.5, 0) })}
         color="primary"
@@ -122,42 +125,11 @@ const columns: GridColDef<ChapterUserData>[] = [
   },
 ];
 
-// const columns: GridColDef<UserData>[] = [
-//   {
-//     field: 'profile_photo',
-//     headerName: '',
-//     sortable: false,
-//     disableColumnMenu: true,
-//     disableExport: true,
-//     width: 70,
-//     renderCell: (params) => {
-//       const fileUrl = params.formattedValue.length ? params.formattedValue[0].file_url : '/images/placeholder.jpg';
-//       return <img className="w-full h-full object-cover" src={fileUrl} alt={`${params.row.name} profile photo`} />
-//     },
-//   },
-//   { field: 'first_name', headerName: 'FIRST NAME', disableColumnMenu: true, width: 125 },
-//   { field: 'last_name', headerName: 'LAST NAME', disableColumnMenu: true, width: 125 },
-//   { field: 'email', headerName: 'E-MAIL', disableColumnMenu: true, width: 250 },
-//   {
-//     field: 'job_title',
-//     headerName: 'JOB TITLE',
-//     disableColumnMenu: true,
-//     width: 250,
-//     valueGetter: (value, row) => row.job_info?.title,
-//   },
-//   {
-//     field: 'company_name',
-//     headerName: 'COMPANY NAME',
-//     disableColumnMenu: true,
-//     width: 250,
-//     valueGetter: (value, row) => row.job_info?.company_name,
-//   },
-// ];
-
-export default function MembersTableMobile({ memberData, isLoading }: MembersTableProps) {
+export function MembersTable({ memberData, isLoading }: MembersTableProps) {
   const [rows, setRows] = useState<ChapterUserData[]>([]);
   const [selection, setSelection] = useState<GridRowSelectionModel>([]);
   const apiRef = useGridApiRef();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const handleClick: GridEventListener<'rowClick'> = (
     params,
@@ -187,65 +159,57 @@ export default function MembersTableMobile({ memberData, isLoading }: MembersTab
   }, [isLoading])
 
   return (
-    <Box sx={{ 
-      width: '92vw',
-      backgroundColor: 'white',
-      "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
-        display: "none!important"
-      },
-      "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus": {
-        outline: "none!important",
-      },
-      "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus-within": {
-        outline: "none!important",
-      },
-      "& .MuiButtonBase-root.MuiPaginationItem-root.Mui-selected": {
-        color: "white",
-      },
-      // "& .MuiDataGrid-overlayWrapper": {
-      //   minHeight: "400px",
-      // },
-      // "& .MuiDataGrid-overlayWrapperInner": {
-      //   minHeight: "inherit",
-      // },
-      "& .MuiInput-root": {
-        backgroundColor: "white",
-        padding: "2px 8px 2px 8px"
-      },
-      "& .header-tools .MuiButtonBase-root": {
-        color: "#1976D2",
-      },
-      }}>
-      <DataGrid
-        // sx={{ minHeight: "595px" }}
-        apiRef={apiRef}
-        rows={rows ?? []}
-        columns={columns}
-        autoHeight {...rows}
-        loading={isLoading}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 10 } },
-          // sorting: { sortModel: [{ field: 'last_name', sort: 'asc' }]},
-        }}
-        slots={{
-          toolbar: CustomToolbar,
-          pagination: CustomPagination,
-          baseCheckbox: CustomCheckbox,
-          noRowsOverlay: CustomNoRowsOverlay,
-        }}
-        slotProps={{
-          toolbar: {
-            rowTotal: rows.length,
-            selectionTotal: selection.length,
-          },
-        }}
-        onRowClick={handleClick}
-        // pageSizeOptions={[8, 10, 12]}
-        checkboxSelection
-        // onRowSelectionModelChange={setSelection}
-        hideFooterSelectedRowCount
-        disableRowSelectionOnClick
-      />
-    </Box>
+    <div className="p-10">
+      <Box sx={{ 
+        width: `${isMobile ? "92vw" : "85vw"}`,
+        backgroundColor: 'white',
+        "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
+          display: "none!important"
+        },
+        "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus": {
+          outline: "none!important",
+        },
+        "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus-within": {
+          outline: "none!important",
+        },
+        "& .MuiButtonBase-root.MuiPaginationItem-root.Mui-selected": {
+          color: "white",
+        },
+        "& .MuiInput-root": {
+          backgroundColor: "white",
+          padding: "2px 8px 2px 8px"
+        },
+        "& .header-tools .MuiButtonBase-root": {
+          color: "#1976D2",
+        },
+        }}>
+        <DataGrid
+          apiRef={apiRef}
+          rows={rows ?? []}
+          columns={columns}
+          autoHeight {...rows}
+          loading={isLoading}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 10 } },
+          }}
+          slots={{
+            toolbar: CustomToolbar,
+            pagination: CustomPagination,
+            baseCheckbox: CustomCheckbox,
+            noRowsOverlay: CustomNoRowsOverlay,
+          }}
+          slotProps={{
+            toolbar: {
+              rowTotal: rows.length,
+              selectionTotal: selection.length,
+            },
+          }}
+          onRowClick={handleClick}
+          checkboxSelection
+          hideFooterSelectedRowCount
+          disableRowSelectionOnClick
+        />
+      </Box>
+    </div>
   );
 }

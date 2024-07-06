@@ -1,12 +1,6 @@
-import { getData } from "@/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { txChapters } from "@/types";
-
-export const config = {
-  api: {
-    responseLimit: false,
-  },
-}
+import { txChapters } from "@types";
+import { getData } from "@utils";
 
 export default async function handler(
   req: NextApiRequest,

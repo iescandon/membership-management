@@ -1,3 +1,4 @@
+// DATAA TYPES
 interface JobInfo {
   id?: number;
   i_am?: string;
