@@ -159,7 +159,7 @@ export function MembersTable({ memberData, isLoading }: MembersTableProps) {
   }, [isLoading])
 
   return (
-    <div className="p-10">
+    <div className="py-8">
       <Box sx={{ 
         width: `${isMobile ? "92vw" : "85vw"}`,
         backgroundColor: 'white',
