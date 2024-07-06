@@ -13,6 +13,7 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
+      "@/*": ["./src/*"],
       "@components": ["./src/components/index.ts"],
       "@hooks": ["./src/hooks/index.ts"],
       "@types": ["./src/types/index.ts"],

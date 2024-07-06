@@ -1,5 +1,4 @@
-import { Select, SelectChangeEvent, FormControl, MenuItem, InputLabel, Box, Typography } from '@mui/material';
-import { useMediaQuery } from "@hooks";
+import { Select, SelectChangeEvent, FormControl, MenuItem, InputLabel, Box } from '@mui/material';
 import { useState } from 'react';
 
 interface NavbarProps {
@@ -8,7 +7,6 @@ interface NavbarProps {
 
 export function Navbar( { callbackFn }: NavbarProps ) {
     const [chapter, setChapter] = useState('');
-    const isMobile = useMediaQuery('(max-width: 768px)');
 
     const handleChange = (event: SelectChangeEvent) => {
         setChapter(event.target.value);
