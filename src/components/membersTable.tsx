@@ -161,6 +161,7 @@ export function MembersTable({ memberData, isLoading }: MembersTableProps) {
   useEffect(() => {
     if (isLoading) {
       setRows([]);
+      setSelection([]);
     };
   }, [isLoading])
 
@@ -203,6 +204,9 @@ export function MembersTable({ memberData, isLoading }: MembersTableProps) {
               rowTotal: rows.length,
               selectionTotal: selection.length,
             },
+          }}
+          onRowSelectionModelChange={(ids) => {
+            setSelection(ids);
           }}
           onRowClick={handleClick}
           checkboxSelection
