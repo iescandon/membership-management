@@ -13,7 +13,7 @@ import {
   useGridSelector,
   GridEventListener,
 } from '@mui/x-data-grid';
-import { Box, Pagination, Typography } from '@mui/material';
+import { Box, Pagination, Typography, Checkbox } from '@mui/material';
 import { GroupOutlined, CheckCircle, LinkedIn } from '@mui/icons-material';
 import { ChapterUserData } from "@types";
 import { useMediaQuery } from "@hooks";
@@ -76,7 +76,13 @@ function CustomPagination () {
 }
 
 function CustomCheckbox (props: any) {
-  return <CheckCircle className={props.checked ? 'text-green-600' : 'text-gray-300'} />
+  return (
+    <Checkbox
+      {...props}
+      icon={<CheckCircle className='text-gray-300' />}
+      checkedIcon={<CheckCircle className='text-green-600' />}
+    />
+  )
 }
 
 function CustomNoRowsOverlay () {
@@ -163,13 +169,7 @@ export function MembersTable({ memberData, isLoading }: MembersTableProps) {
       <Box sx={{ 
         width: `${isMobile ? "92vw" : "85vw"}`,
         backgroundColor: 'white',
-        "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
-          display: "none!important"
-        },
-        "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus": {
-          outline: "none!important",
-        },
-        "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus-within": {
+        "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus, .MuiDataGrid-cell:focus-within, .MuiDataGrid-columnHeaderCheckbox:focus, .MuiDataGrid-columnHeaderCheckbox:focus-within": {
           outline: "none!important",
         },
         "& .MuiButtonBase-root.MuiPaginationItem-root.Mui-selected": {
